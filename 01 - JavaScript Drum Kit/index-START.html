@@ -59,8 +59,41 @@
 
 <script>
 
-</script>
+const keys = document.querySelectorAll('.key')
+const audio = document.querySelectorAll('audio')
 
+const playSoundAndAnimateKey = (e) => {
+  const keyname = e.key
+  keys.forEach((key) => {
+    if(key.children[0].textContent.toLowerCase() === keyname) {
+      audio.forEach((sound) => {
+        if(sound.dataset.key === key.dataset.key) {
+          sound.currentTime = 0;
+          sound.play()
+          key.classList.toggle('playing')
+        }
+      })
+    }
+  })
+}
+
+const stopAnimationKey = (e) => {
+  const keyname = e.key
+  keys.forEach((key) => {
+    if(key.children[0].textContent.toLowerCase() === keyname) {
+      audio.forEach((sound) => {
+        if(sound.dataset.key === key.dataset.key) {
+          key.classList.toggle('playing')
+        }
+      })
+    }
+  })
+}
+
+document.addEventListener('keypress', playSoundAndAnimateKey, false)
+document.addEventListener('keyup', stopAnimationKey, false)
+
+</script>
 
 </body>
 </html>
