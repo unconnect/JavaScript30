@@ -1,48 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Understanding JavaScript's Capture</title>
-</head>
-<body class="bod">
-
-  <div class="one">
-    <div class="two">
-      <div class="three">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Understanding JavaScript's Capture</title>
+  </head>
+  <body class="bod">
+    <div class="one">
+      <div class="two">
+        <div class="three"></div>
       </div>
     </div>
-  </div>
 
-<style>
-  html {
-    box-sizing: border-box;
-  }
-  
-  *, *:before, *:after { 
-    box-sizing: inherit; 
-  }
+    <style>
+      html {
+        box-sizing: border-box;
+      }
 
-  div {
-    width: 100%;
-    padding: 100px;
-  }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
 
-  .one {
-    background: thistle;
-  }
+      div {
+        width: 100%;
+        padding: 100px;
+      }
 
-  .two {
-    background: mistyrose;
-  }
+      .one {
+        background: thistle;
+      }
 
-  .three {
-    background: coral;
-  }
-</style>
+      .two {
+        background: mistyrose;
+      }
 
-<button></button>
-<script>
+      .three {
+        background: coral;
+      }
+    </style>
 
-</script>
-</body>
+    <button></button>
+    <script>
+      const divs = document.querySelectorAll("div");
+
+      function logText(e) {
+        console.log(this.classList.value);
+        e.stopPropagation() // stops the event bubbling up in the DOM so only the clicked element is calling back. This means it will only call the most inner elements event back, even when clicking on one of it's ancestors!
+        // if(this.classList.value === 'two' || this.classList.value === 'three') e.stopPropagation()
+      }
+
+      document.body.addEventListener("click", logText);
+
+      divs.forEach((div) =>
+        div.addEventListener("click", logText, {
+          capture: false, // if true, runs the callback-function on the way down, default: false, while bubbling on the way up
+          once: true // the elements event is only calling back once! Handy for example in context of an shop checkout button, where you only want users to be able to click the buttons once.
+        })
+      );
+    </script>
+  </body>
 </html>
